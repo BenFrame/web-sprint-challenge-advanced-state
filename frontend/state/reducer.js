@@ -25,28 +25,26 @@ function wheel(state = initialWheelState, action) {
   }
 }
 
-const initialQuizState = null
+const initialQuizState = { answers: [], question: '', quiz_id: '' }
 function quiz(state = initialQuizState, action) {
   switch(action.type){
     case(SET_QUIZ_INTO_STATE):{
-      return {
-        ...state, 
-
-      }
+      const { answers, question, quiz_id } = action.payload;
+      // return action.payload;
+      return { ...state, answers, question, quiz_id }
     }
     default:
       return state;
   }
 }
 
-const initialSelectedAnswerState = null
+const initialSelectedAnswerState = {Select:'Select'}
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch(action.type){
     case(SET_SELECTED_ANSWER):{
-      return {
-        ...state, 
+      return 'Selected'
 
-      }
+      
     }
     default:
       return state;
