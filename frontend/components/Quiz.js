@@ -28,7 +28,7 @@ function Quiz(props) {
             <h2>{ question }</h2>
               
             <div id="quizAnswers">
-              <div className= "answer">
+              <div className= "answer selected">
                 {answers[0]?.text}
                 <button onClick={onClick}>
                   {selectedAnswer === 0 ? "Selected" : "Select"}
