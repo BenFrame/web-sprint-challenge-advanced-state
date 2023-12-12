@@ -22,7 +22,9 @@ function Quiz(props) {
 
   // the functional component version of componentDidMount(){}
   useEffect( () => {
-    fetchQuiz();
+    if( ! question ) {
+      fetchQuiz();
+    }
   }, [] );
 
   function onClick() {

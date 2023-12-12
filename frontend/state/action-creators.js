@@ -69,8 +69,16 @@ export function postAnswer(quizId, answerId) {
     // - Dispatch the fetching of the next quiz
   }
 }
-export function postQuiz() {
+export function postQuiz(questionText, trueAnswerText, falseAnswerText) {
   return function (dispatch) {
+    return axios.post('http://localhost:9000/api/quiz/new',{
+      question_text: questionText, 
+      true_answer_text: trueAnswerText, 
+      false_answer_text: falseAnswerText
+    })
+    .then((response) => {
+      dispatch(response)
+    })
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
