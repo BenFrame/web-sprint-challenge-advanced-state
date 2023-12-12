@@ -29,8 +29,8 @@ export function setQuiz( quizData ) {
   return({type:SET_QUIZ_INTO_STATE, payload: quizData })
  }
 
-export function inputChange() {
-  return({type:INPUT_CHANGE})
+export function inputChange(string) {
+  return({type:INPUT_CHANGE, payload: string})
  }
 
 export function resetForm() {
