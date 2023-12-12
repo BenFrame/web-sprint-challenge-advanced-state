@@ -38,11 +38,11 @@ function quiz(state = initialQuizState, action) {
   }
 }
 
-const initialSelectedAnswerState = {Select:'Select'}
+const initialSelectedAnswerState = ''
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch(action.type){
     case(SET_SELECTED_ANSWER):{
-      return 'Selected'
+      return action.payload
 
       
     }
@@ -55,10 +55,7 @@ const initialMessageState = ''
 function infoMessage(state = initialMessageState, action) {
   switch(action.type){
     case(SET_INFO_MESSAGE):{
-      return {
-        ...state, 
-
-      }
+      return action.payload
     }
     default:
       return state;

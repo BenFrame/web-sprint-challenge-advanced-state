@@ -1,24 +1,36 @@
 import React, { useEffect } from 'react'
-import { selectAnswer, setQuiz, setMessage, fetchQuiz } from '../state/action-creators'
+import { 
+  selectAnswer,  
+  setMessage, 
+  fetchQuiz, 
+  postAnswer } from '../state/action-creators'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
 function Quiz(props) {
-  const {selectedAnswer, setQuiz, setMessage, fetchQuiz, answers, question, } = props;
+  const {
+    selectedAnswer, 
+    setMessage, 
+    fetchQuiz, 
+    answers, 
+    question, 
+    selectAnswer, 
+    postAnswer, 
+    quiz_id } = props;
 
-  // console.log( answers );
+  console.log( selectedAnswer );
 
   // the functional component version of componentDidMount(){}
   useEffect( () => {
     fetchQuiz();
   }, [] );
 
-  function onClick(evt) {
-    const answers = evt.target
-    console.log(answers)
-     
+  function onClick() {
+    postAnswer(quiz_id, selectedAnswer)
+    setMessage('')
   }
 
+  const firstAnswerId = answers[0]?.answer_id;
   return (
     <div id="wrapper">
       {
@@ -28,22 +40,22 @@ function Quiz(props) {
             <h2>{ question }</h2>
               
             <div id="quizAnswers">
-              <div className= "answer selected">
+              <div className= {selectedAnswer === firstAnswerId ? "answer selected" : "answer"}>
                 {answers[0]?.text}
-                <button onClick={onClick}>
-                  {selectedAnswer === 0 ? "Selected" : "Select"}
+                <button onClick={ () => selectAnswer( firstAnswerId )}>
+                  {selectedAnswer === firstAnswerId ? "SELECTED" : 'Select'}
                 </button>
               </div>
 
-              <div className="answer">
+              <div className={selectedAnswer === answers[1]?.answer_id ? "answer selected" : "answer"}>
               {answers[1]?.text}
-                <button onClick={onClick}>
-                {selectedAnswer === 1 ? "Selected" : "Select"}
+                <button onClick={ () => selectAnswer( answers[1]?.answer_id )}>
+                {selectedAnswer === answers[1]?.answer_id ? "SELECTED" : "Select"}
                 </button>
               </div>
             </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
+            <button id="submitAnswerBtn" onClick={onClick} disabled={!selectedAnswer}>Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
@@ -55,6 +67,15 @@ const mapStateToProps = (state) => {
     answers: state.quiz.answers,
     question: state.quiz.question,
     quiz_id: state.quiz.quiz_id,
+    selectedAnswer: state.selectedAnswer
   })
 }
-export default connect(mapStateToProps,{selectAnswer,setQuiz,setMessage,fetchQuiz})(Quiz);
+const mapDispatchToProps = (dispatch) => {
+  return ({
+    selectAnswer: ( answerId ) => dispatch( selectAnswer( answerId ) ),
+    setMessage: (message) => dispatch( setMessage(message) ),
+    fetchQuiz: () => dispatch( fetchQuiz() ),
+    postAnswer: (quizId, answerId) => dispatch( postAnswer( quizId, answerId))
+  })
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Quiz);

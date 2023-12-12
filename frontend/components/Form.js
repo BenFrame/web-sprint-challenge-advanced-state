@@ -1,8 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
+import { inputChange, resetForm } from '../state/action-creators'
 
-export function Form(props) {
+function Form(props) {
+  const{inputChange, resetForm } = props
 
   const onChange = evt => {
 
@@ -22,5 +24,10 @@ export function Form(props) {
     </form>
   )
 }
+const mapStateToProps = (state) => {
+  return ({
+    
+  })
+}
 
-export default connect(st => st, actionCreators)(Form)
+export default connect(mapStateToProps,{inputChange, resetForm})(Form)
