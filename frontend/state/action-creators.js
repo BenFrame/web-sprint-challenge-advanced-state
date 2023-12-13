@@ -77,7 +77,9 @@ export function postQuiz(questionText, trueAnswerText, falseAnswerText) {
       false_answer_text: falseAnswerText
     })
     .then((response) => {
-      dispatch(response)
+      console.log(response)
+      dispatch(setMessage(`Congrats: "${questionText}" is a great question!`))
+      dispatch(resetForm())
     })
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state

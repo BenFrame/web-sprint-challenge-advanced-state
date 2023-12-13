@@ -70,10 +70,10 @@ const initialFormState = {
 function form(state = initialFormState, action) {
   switch(action.type){
     case(RESET_FORM):{
-      return {...state}
+      return initialFormState
     }
     case(INPUT_CHANGE):{
-      return{...state}
+      return{...state, ...action.payload }
     }
     default:
       return state;
