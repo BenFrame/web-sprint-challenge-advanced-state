@@ -1,31 +1,42 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 import {resetForm, postQuiz, inputChange } from '../state/action-creators'
 import * as yup from 'yup' 
 
 
-
+const formInit = {
+  questionText: '',
+  trueAnswerText: '', 
+  falseAnswerText: '',
+}
 
 const formSchema  = yup.object().shape({
   questionText: yup.string()
-  .required('question is required')
-  .min(1,'to short'),
+  .min(2,'too short')
+  .required('question is required'),
   trueAnswerText: yup.string()
-  .required('true answer required')
-  .min(1,'to short'), 
+  .min(2,'too short') 
+  .required('true answer required'),
   falseAnswerText: yup.string()
+  .min(2,'too short')
   .required('false answer required')
-  .min(1,'to short')
 })
 
+
+
+
 function Form(props) {
-  const{resetForm, questionText, trueAnswerText, falseAnswerText, inputChange, postQuiz } = props
+  const{questionText, trueAnswerText, falseAnswerText, inputChange, postQuiz } = props
+  let [canSubmit, setCanSubmit] = useState(false)
+
+  useEffect(()=> {
+    formSchema.isValid({questionText: questionText.trim(), trueAnswerText: trueAnswerText.trim(), falseAnswerText: falseAnswerText.trim()}).then(setCanSubmit)
+  },[questionText, trueAnswerText, falseAnswerText])
 
   const onChange = evt => {
     let {value, id} = evt.target
-    console.log(value)
-    // formSchema.isValid(value)
+    // console.log(value)
     inputChange( { [id]: value } );
   }
 
@@ -41,7 +52,7 @@ function Form(props) {
       <input maxLength={50} onChange={onChange} value={questionText} id="newQuestion" placeholder="Enter question" />
       <input maxLength={50} onChange={onChange} value={trueAnswerText} id="newTrueAnswer" placeholder="Enter true answer" />
       <input maxLength={50} onChange={onChange} value={falseAnswerText} id="newFalseAnswer" placeholder="Enter false answer" />
-      <button id="submitNewQuizBtn" type='submit' disabled={ ! ( questionText.length > 1 && trueAnswerText.length > 1 && falseAnswerText.length > 1 ) }>Submit new quiz</button>
+      <button id="submitNewQuizBtn" type='submit' disabled={ ! canSubmit }>Submit new quiz</button>
     </form>
   )
 }
@@ -50,7 +61,7 @@ const mapStateToProps = (state) => {
    questionText: state.form.newQuestion,
    trueAnswerText: state.form.newTrueAnswer,
    falseAnswerText: state.form.newFalseAnswer,  
-
+    // canSubmit: state.form.isValid,
   })
 }
 const mapDispatchToProps = (dispatch) => {

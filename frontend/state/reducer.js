@@ -66,6 +66,7 @@ const initialFormState = {
   newQuestion: '',
   newTrueAnswer: '',
   newFalseAnswer: '',
+  // isValid: false,
 }
 function form(state = initialFormState, action) {
   switch(action.type){

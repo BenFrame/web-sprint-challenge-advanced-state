@@ -8,6 +8,19 @@ import {
   INPUT_CHANGE,
   RESET_FORM } from "./action-types"
   import axios from "axios"
+  import * as yup from 'yup' 
+
+  // const formSchema  = yup.object().shape({
+  //   newQuestion: yup.string()
+  //   .min(2,'too short')
+  //   .required('question is required'),
+  //   newTrueAnswer: yup.string()
+  //   .min(2,'too short') 
+  //   .required('true answer required'),
+  //   newFalseAnswer: yup.string()
+  //   .min(2,'too short')
+  //   .required('false answer required')
+  // })
 
 export function moveClockwise() { 
   return({type: MOVE_CLOCKWISE})
@@ -32,6 +45,20 @@ export function setQuiz( quizData ) {
 export function inputChange(string) {
   return({type:INPUT_CHANGE, payload: string})
  }
+
+// export function inputChange(string) {
+//   return function (dispatch) {
+//     const { newQuestion, newTrueAnswer, newFalseAnswer } = string;
+//     console.log( newQuestion );
+//     console.log( newTrueAnswer);
+//     console.log( newFalseAnswer );
+//     return formSchema.isValid({newQuestion: newQuestion.trim(), newTrueAnswer: newTrueAnswer.trim(), newFalseAnswer: newFalseAnswer.trim()})
+//     .then( (isValid) => {
+//       console.log( string )
+//       console.log( isValid )
+//       dispatch({type:INPUT_CHANGE, payload: { ...string, isValid } } ) } )
+//   }
+//  }
 
 export function resetForm() {
   return({type:RESET_FORM})
@@ -77,7 +104,7 @@ export function postQuiz(questionText, trueAnswerText, falseAnswerText) {
       false_answer_text: falseAnswerText
     })
     .then((response) => {
-      console.log(response)
+      // console.log(response)
       dispatch(setMessage(`Congrats: "${questionText}" is a great question!`))
       dispatch(resetForm())
     })
